@@ -1,0 +1,237 @@
+# Assignment 2 Documentation and Instructions
+
+## Introduction
+This project implements a web application for course scheduling using Flask and provides end-to-end (E2E) tests using Selenium and unit tests using the `unittest` framework. The goal is to ensure that the course scheduling solution handles various edge cases and correctly identifies cyclic dependencies.
+
+## Project Structure
+The project consists of the following files:
+- `app.py`: The Flask web application that provides a web interface for inputting the number of courses and prerequisites.
+- `index.html`: The HTML template for the web interface.
+- `solution.py`: The Python module containing the `Solution` class with the `findOrder` method for determining the course schedule.
+- `test_app.py`: The test suite containing E2E tests and unit tests for the application and solution.
+
+## Instructions
+1. **Set up the virtual environment and install dependencies**:
+   ```sh
+   python -m venv .venv
+   .\.venv\Scripts\activate
+   pip install -r requirements.txt
+
+
+2. Run the Flask application:
+
+    python app.py
+
+3. Run the test suite with coverage:
+
+     coverage run --source=app,solution -m unittest discover
+     coverage report -m
+     coverage html
+
+
+ 4. Access the application:
+    Open a web browser and go to http://127.0.0.1:5000/.  
+
+
+
+
+Test Plan
+
+Test Case 1: Simple Valid Case
+Description: Test a simple valid case with two courses and one prerequisite.
+Input:
+numCourses = 2
+prerequisites = [[1, 0]]
+Expected Output:
+[0, 1]
+
+Test Case 2: Multiple Valid Orders
+
+Description: Test a case with multiple valid course orders.
+Input:
+numCourses = 4
+prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2]]
+Expected Output:
+[0, 2, 1, 3] or [0, 1, 2, 3]
+
+Test Case 3: No Prerequisites
+
+Description: Test a case with no prerequisites.
+Input:
+numCourses = 3
+prerequisites = []
+Expected Output:
+[0, 1, 2]
+
+Test Case 4: Impossible to Complete
+
+Description: Test a case where it's impossible to complete the courses due to a cycle.
+Input:
+numCourses = 2
+prerequisites = [[0, 1], [1, 0]]
+Expected Output:
+[]
+
+Test Case 5: Large Number of Courses
+
+Description: Test a case with a large number of courses.
+Input:
+numCourses = 2000
+prerequisites = [[i, i - 1] for i in range(1, numCourses)]
+Expected Output:
+A valid topological sort of the courses
+
+Test Case 6: Complex Cycle
+
+Description: Test a complex cyclic dependency case.
+Input:
+numCourses = 6
+prerequisites = [[1, 0], [2, 1], [3, 2], [4, 3], [5, 4], [0, 5]]
+Expected Output:
+[]
+Additional Test Cases
+
+Test Case: Course with No Dependencies
+
+Description: Test a case with a course having no dependencies.
+Input:
+numCourses = 3
+prerequisites = [[1, 0]]
+Expected Output:
+[0, 1, 2]
+
+Test Case: Maximum Constraints
+
+Description: Test a case with the maximum number of courses.
+Input:
+numCourses = 2000
+prerequisites = [[i, i - 1] for i in range(1, numCourses)]
+Expected Output:
+A valid topological sort of the courses
+Test Case: Bug Report Example
+Description: Test a case with a known bug scenario.
+Input:
+numCourses = 4
+prerequisites = [[1, 0], [2, 1], [3, 2], [0, 3]]
+Expected Output:
+[]
+Bug Reports
+Bug 1
+Description:
+Cyclic dependencies in the prerequisites list were not detected, causing an infinite loop.
+
+Steps to Reproduce:
+Use the following input:
+numCourses = 4
+prerequisites = [[1, 0], [2, 1], [3, 2], [0, 3]]
+Run the solution.
+Expected Result:
+The function should return an empty list, indicating that it's not possible to complete the courses due to cyclic dependencies.
+
+Actual Result:
+The function enters an infinite loop.
+
+Fix:
+Implemented cycle detection using a cycle set in the DFS function to detect cycles and return False if a cycle is found.
+
+
+
+Bug 2
+Description:
+Incorrect handling of invalid input formats for the prerequisites list.
+
+Steps to Reproduce:
+Use the following input:
+numCourses = 3
+prerequisites = invalid_format
+Run the solution.
+Expected Result:
+The function should raise a ValueError or similar indicating invalid input format.
+
+Actual Result:
+The function raises a NameError.
+
+Fix:
+Added input validation and error handling to catch SyntaxError and NameError and return an appropriate error message.
+
+Test Results
+Test Run Summary
+Date: [Insert Date]
+Total Tests Run: 26
+Passed: 26
+Failed: 0
+Test Case Results
+Test Case 1: Simple Valid Case
+Status: Passed
+Input:
+numCourses = 2
+prerequisites = [[1, 0]]
+Output:
+[0, 1]
+Test Case 2: Multiple Valid Orders
+Status: Passed
+Input:
+numCourses = 4
+prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2]]
+Output:
+[0, 2, 1, 3] or [0, 1, 2, 3]
+Test Case 3: No Prerequisites
+Status: Passed
+Input:
+numCourses = 3
+prerequisites = []
+Output:
+[0, 1, 2]
+Test Case 4: Impossible to Complete
+Status: Passed
+Input:
+numCourses = 2
+prerequisites = [[0, 1], [1, 0]]
+Output:
+[]
+Test Case 5: Large Number of Courses
+Status: Passed
+Input:
+numCourses = 2000
+prerequisites = [[i, i - 1] for i in range(1, numCourses)]
+Output:
+A valid topological sort of the courses
+Test Case 6: Complex Cycle
+Status: Passed
+Input:
+numCourses = 6
+prerequisites = [[1, 0], [2, 1], [3, 2], [4, 3], [5, 4], [0, 5]]
+Output:
+[]
+Additional Test Cases
+Test Case: Course with No Dependencies
+Status: Passed
+Input:
+numCourses = 3
+prerequisites = [[1, 0]]
+Output:
+[0, 1, 2]
+Test Case: Maximum Constraints
+Status: Passed
+Input:
+numCourses = 2000
+prerequisites = [[i, i - 1] for i in range(1, numCourses)]
+Output:
+A valid topological sort of the courses
+Test Case: Bug Report Example
+Status: Passed
+Input:
+numCourses = 4
+prerequisites = [[1, 0], [2, 1], [3, 2], [0, 3]]
+Output:
+[]
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Schedule</title>
+</head>
+<body>
+    <h1>Course Schedule</h1>
+    <form method="POST">
+        <label for="num_courses">Number of Courses:</label>
+        <input type="number" id="num_courses" name="num_courses" required><br><br>
+        <label for="prerequisites">Prerequisites (e.g., [[1,0],[2,0]]):</label>
+        <input type="text" id="prerequisites" name="prerequisites" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% if course_order is not none %}
+        <h2>Course Order:</h2>
+        <p>{{ course_order }}</p>
+    {% endif %}
+</body>
+</html>

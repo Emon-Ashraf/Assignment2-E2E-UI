@@ -1,0 +1,5 @@
+Flask~=3.0.3
+selenium~=4.21.0
+webdriver-manager
+parameterized~=0.9.0
+coverage~=6.2
